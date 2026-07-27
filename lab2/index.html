@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="D3 Data Binding Examples">
+    <meta name="keywords" content="HTML, D3, JavaScript">
+    <meta name="author" content="Hitesh Kumar">
+
+    <title>Lab 2 - D3 Data Binding</title>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: steelblue;
+        }
+
+        h2 {
+            color: #444;
+            margin-top: 40px;
+        }
+
+        .example {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 30px;
+            background-color: #f9f9f9;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 6px 0;
+        }
+
+        footer {
+            color: grey;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>The D3 Journey Starts Here...</h1>
+
+
+    <h2>Example 1 - Append a Paragraph</h2>
+
+    <div id="example1" class="example"></div>
+
+    <script>
+
+        // Example from Murray
+        d3.select("#example1")
+            .append("p")
+            .text("New paragraph!");
+
+    </script>
+
+    <h2>Example 2 - Bind Data and Create Paragraphs</h2>
+
+    <div id="example2" class="example"></div>
+
+    <script>
+
+        // Example from Murray
+        var dataset = [14, 5, 26, 23, 9];
+
+        d3.select("#example2")
+            .selectAll("p")
+            .data(dataset)
+            .enter()
+            .append("p")
+            .text("New Paragraph");
+
+    </script>
+    <h2>Example 3 - Display Data Values</h2>
+
+    <div id="example3" class="example"></div>
+
+    <script>
+
+        // Example from Murray
+        var dataset = [14, 5, 26, 23, 9, 12, 5];
+
+        d3.select("#example3")
+            .selectAll("p")
+            .data(dataset)
+            .enter()
+            .append("p")
+            .style("color", function (d) {
+
+                if (d > 20) {
+                    return "red";
+                } else {
+                    return "black";
+                }
+
+            })
+            .style("font-weight", function (d) {
+
+                if (d > 20) {
+                    return "bold";
+                } else {
+                    return "normal";
+                }
+
+            })
+            .text(function (d, i) {
+
+                if (d > 20) {
+                    return "Warning: Joe watched " + d + " cat videos today. (i = " + i + ")";
+                } else {
+                    return "Joe watched " + d + " cat videos today. (i = " + i + ")";
+                }
+
+            });
+
+        // Display bound data in browser console
+        console.log(d3.selectAll("#example3 p"));
+
+    </script>
+
+    <footer>
+        COS30045 Data Visualisation<br>
+        Hitesh Kumar
+    </footer>
+
+</body>
+
+</html>

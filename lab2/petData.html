@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Data Visualisation"/>
+    <meta name="keywords" content="HTML, CSS, D3"/>
+    <meta name="author" content="Hitesh Kumar"/>
+
+    <title>Task D3 CSV Bar Chart</title>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+
+<h1>Pet Ownership in Australia</h1>
+
+<figure>
+    <figcaption>Figure 1. Pet Ownership in Australia (2019)</figcaption>
+    <div id="chart2019"></div>
+</figure>
+
+<figure>
+    <figcaption>Figure 2. Pet Ownership in Australia (2021)</figcaption>
+    <div id="chart2021"></div>
+</figure>
+
+<footer>
+    COS30045 Data Visualisation
+</footer>
+
+<script>
+
+var w = 500;
+var h = 220;
+var barPadding = 5;
+
+d3.csv("pet_ownership.csv").then(function(data) {
+
+    console.log(data);
+
+    barChart(data, "#chart2019", "pets2019");
+    barChart(data, "#chart2021", "pets2021");
+
+});
+
+function barChart(petOwnership, chartID, columnName) {
+
+    var svg = d3.select(chartID)
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+    // Draw bars
+    svg.selectAll("rect")
+        .data(petOwnership)
+        .enter()
+        .append("rect")
+        .attr("x", function(d, i) {
+            return i * (w / petOwnership.length);
+        })
+        .attr("y", function(d) {
+            return h - (d[columnName] * 4);
+        })
+        .attr("width", (w / petOwnership.length) - barPadding)
+        .attr("height", function(d) {
+            return d[columnName] * 4;
+        })
+        .attr("fill", function(d) {
+            if (d[columnName] >= 30) {
+                return "steelblue";
+            } else {
+                return "lightblue";
+            }
+        });
+
+    // Animal labels
+    svg.selectAll(".label")
+        .data(petOwnership)
+        .enter()
+        .append("text")
+        .attr("class", "label")
+        .text(function(d) {
+            return d.animal;
+        })
+        .attr("x", function(d, i) {
+            return i * (w / petOwnership.length) + 8;
+        })
+        .attr("y", h - 5)
+        .attr("font-size", "10px");
+
+    // Value labels
+    svg.selectAll(".value")
+        .data(petOwnership)
+        .enter()
+        .append("text")
+        .attr("class", "value")
+        .text(function(d) {
+            return d[columnName];
+        })
+        .attr("x", function(d, i) {
+            return i * (w / petOwnership.length) + 12;
+        })
+        .attr("y", function(d) {
+            return h - (d[columnName] * 4) - 5;
+        })
+        .attr("font-size", "10px");
+}
+
+</script>
+
+</body>
+
+</html>
